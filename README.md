@@ -1,6 +1,6 @@
-# hn2026 Pwn Challenges
+# pwn2heap
 
-7 道可独立构建、Docker 部署并适配 GZ::CTF `GZCTF_FLAG` 动态 flag 的 Pwn 题目。题目统一包含源码、发布附件、对应 glibc/loader、Docker 部署文件及出题人验证脚本。
+HN2026 的 7 道可独立构建、Docker 部署并适配 GZ::CTF `GZCTF_FLAG` 动态 flag 的 Pwn 题目。题目统一包含源码、发布附件、对应 glibc/loader、Docker 部署文件及出题人验证脚本。
 
 > 本仓库包含官方解题脚本（`solve.py` / `notezpz*.py`），适合作为**出题人私有仓库**。若需赛前公开源码，请在发布前删除各题的官方解题脚本。
 
