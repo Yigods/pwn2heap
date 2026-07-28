@@ -1,0 +1,37 @@
+# Python/tool caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# IDE / editor state
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# Local challenge state: flags are injected by GZCTF_FLAG at container start.
+**/flag
+
+# Rebuild-only ELF files. Release attachments are the tracked *_patched variants.
+/ezpz1/ezpz1
+/ezpz2/ezpz2
+/notezpz1/notezpz
+/notezpz1-plus/notezpz
+/notezpz2/notezpz2
+/applepie/applepie
+/darklamp/darklamp
+
+# Reverse-engineering and generated exports
+*.i64
+*.id0
+*.id1
+*.id2
+*.nam
+*.til
+Ponce.cfg
+docker-images/
+*.tar
+*.tar.gz
+*.sha256
+*.log

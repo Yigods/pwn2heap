@@ -1,0 +1,116 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#define MAX_QUESTIONS 32
+
+struct question {
+    void (*print)(struct question *q);
+    char *text;
+};
+
+static const char banner[] =
+"  ____        _     _           _             \n"
+" |  _ \\  ___ | |__ | |__  _   _| |__  _   _  \n"
+" | | | |/ _ \\| '_ \\| '_ \\| | | | '_ \\| | | | \n"
+" | |_| | (_) | |_) | |_) | |_| | | | | |_| | \n"
+" |____/ \\___/|_.__/|_.__/ \\__, |_| |_|\\__, | \n"
+"                            |___/       |___/  \n";
+
+int number_questions;
+struct question *questions[MAX_QUESTIONS];
+
+static void flush(void) {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {}
+}
+
+void print_banner(void) { puts(banner); }
+
+void print_question(struct question *q) {
+    puts("Dobby has a question for you");
+    printf("I have the answer perhaps: '%s'", q->text);
+}
+
+void create_question(void) {
+    if (number_questions > 31) {
+        puts("Too many questions created...");
+        return;
+    }
+    puts("Creating new question...");
+    struct question *q = malloc(0x10);
+    if (!q) { puts("Failed to create new question"); return; }
+    q->text = malloc(0x10);
+    if (!q->text) { puts("Failed to create new question"); free(q); return; }
+    memset(q->text, 0, 0x18); /* intentional bug: clears past the small text chunk */
+    q->print = print_question;
+    printf("Created new question. ID %d", number_questions);
+    questions[number_questions++] = q;
+}
+
+struct question *get_question(void) {
+    char idbuf[4] = {0};
+    printf("Enter question id: ");
+    fgets(idbuf, sizeof(idbuf), stdin);
+    int id = atoi(idbuf);
+    if (id < 0 || id >= number_questions) {
+        puts("Invalid ID");
+        _exit(0);
+    }
+    return questions[id];
+}
+
+void delete_question(void) {
+    struct question *q = get_question();
+    char *text = q->text;
+    free(q);
+    free(text);
+    puts("Question deleted");
+}
+
+void set_question(void) {
+    struct question *q = get_question();
+    printf("Enter your question: ");
+    fgets(q->text, 0x18, stdin); /* intentional overflow into next chunk metadata/data */
+    puts("question set... ");
+}
+
+void ask_question(void) {
+    struct question *q = get_question();
+    q->print(q);
+}
+
+void win(void) {
+    system("/bin/sh");
+}
+
+int menu(void) {
+    putchar('\n');
+    puts("[C]reate new question");
+    puts("[D]elete question");
+    puts("[S]et question");
+    puts("[A]sk question");
+    puts("[Q]uit");
+    putchar('\n');
+    printf("Enter your choice, (or press enter to refresh): ");
+    int ch = getchar();
+    if (ch == EOF) return 0;
+    switch (ch) {
+        case 'C': case 'c': flush(); create_question(); break;
+        case 'D': case 'd': flush(); delete_question(); break;
+        case 'S': case 's': flush(); set_question(); break;
+        case 'A': case 'a': flush(); ask_question(); break;
+        case 'Q': case 'q': flush(); return 0;
+        case '\n': break;
+        default: putchar('\n'); break;
+    }
+    return 1;
+}
+
+int main(void) {
+    setbuf(stdout, NULL);
+    print_banner();
+    while (menu()) {}
+    return 0;
+}

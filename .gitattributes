@@ -1,0 +1,4 @@
+# Keep shipped ELF/runtime artifacts from being treated as source code.
+*.so.6 binary
+ld-linux* binary
+*_patched binary

@@ -1,0 +1,50 @@
+services:
+  ezpz1:
+    image: pwn-ezpz1:latest
+    build: ./ezpz1
+    ports: ["8002:9999"]
+    environment:
+      GZCTF_FLAG: "flag{test_ezpz1_glibc_239}"
+    restart: unless-stopped
+  ezpz2:
+    image: pwn-ezpz2:latest
+    build: ./ezpz2
+    ports: ["8003:9999"]
+    environment:
+      GZCTF_FLAG: "flag{test_ezpz2_glibc_239}"
+    restart: unless-stopped
+  notezpz1:
+    image: pwn-notezpz1:latest
+    build: ./notezpz1
+    ports: ["8004:9999"]
+    environment:
+      GZCTF_FLAG: "flag{test_notezpz1_classic_glibc_227}"
+    restart: unless-stopped
+  notezpz1-plus:
+    image: pwn-notezpz1-plus:latest
+    build: ./notezpz1-plus
+    ports: ["8007:9999"]
+    environment:
+      GZCTF_FLAG: "flag{test_notezpz1_glibc_239}"
+    restart: unless-stopped
+  notezpz2:
+    image: pwn-notezpz2:latest
+    build: ./notezpz2
+    ports: ["8005:9999"]
+    environment:
+      GZCTF_FLAG: "flag{test_notezpz2_glibc_239}"
+    restart: unless-stopped
+  applepie:
+    image: pwn-applepie:latest
+    build: ./applepie
+    ports: ["8006:9999"]
+    environment:
+      GZCTF_FLAG: "flag{test_applepie_house_of_apple2_orw}"
+    restart: unless-stopped
+  darklamp:
+    image: pwn-darklamp:latest
+    build: ./darklamp
+    ports: ["8008:9999"]
+    environment:
+      GZCTF_FLAG: "flag{test_darklamp_oracle_state_machine_orw}"
+    restart: unless-stopped
